@@ -30,7 +30,7 @@ def predict_news(news_text):
     return label, float(prob)
 
 # ---------------- Streamlit UI ----------------
-st.title("📰 Fake News Classifier")
+st.title("📰 Fake News Detection System Using NLP")
 st.write("Powered by TF-IDF + Logistic Regression (98.7% test accuracy)")
 
 news = st.text_area("Enter a news article:", height=200, placeholder="Paste the news title and/or article text here...")
