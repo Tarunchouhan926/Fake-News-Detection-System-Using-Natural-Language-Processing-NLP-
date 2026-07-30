@@ -585,7 +585,7 @@ st.markdown(
         <div class="name">Made by Tarun Chouhan</div>
         <div class="tags">NLP • Machine Learning • Streamlit</div>
         <div class="links">
-            <a href="https://github.com/Tarunchouhan926" target="_blank">🐙 GitHub</a>
+            <a href="https://github.com/Tarunchouhan926/Fake-News-Detection-System-Using-Natural-Language-Processing-NLP-">🐙 GitHub</a>
             <a href="https://linkedin.com/in/tarun-chouhan" target="_blank">💼 LinkedIn</a>
         </div>
     </div>
