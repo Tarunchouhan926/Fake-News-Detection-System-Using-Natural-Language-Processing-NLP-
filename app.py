@@ -139,10 +139,10 @@ with st.sidebar:
         """
         <div style="display: flex; gap: 10px; margin-top: 8px;">
             <a href="https://github.com/Tarunchouhan926/Fake-News-Detection-System-Using-Natural-Language-Processing-NLP-" target="_blank" style="text-decoration:none;">
-                <img src="https://img.shields.io/badge/GitHub-Repo-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub">
+                <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub">
             </a>
             <a href="https://linkedin.com/in/tarun-chouhan" target="_blank" style="text-decoration:none;">
-                <img src="https://img.shields.io/badge/LinkedIn-Profile-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn">
+                <img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn">
             </a>
         </div>
         """,
