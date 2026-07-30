@@ -587,7 +587,7 @@ st.markdown(
         <div class="links">
             <a href="https://github.com/Tarunchouhan926" target="_blank">🐙 GitHub</a>
             <a href="https://linkedin.com/in/tarun-chouhan" target="_blank">💼 LinkedIn</a>
-            <a href="mailto:tarun@example.com">✉️ Email</a>
+            <a href="mailto:tarunchouhan926@gmail.com">✉️ Email</a>
         </div>
     </div>
     """,
