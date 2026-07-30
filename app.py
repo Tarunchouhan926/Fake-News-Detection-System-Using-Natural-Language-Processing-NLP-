@@ -149,28 +149,28 @@ st.markdown(
 col1, col2 = st.columns([2, 1], gap="large")
 
 with col1:
-    st.markdown('<div class="card">', unsafe_allow_html=True)
-    news = st.text_area(
-        "News Article Text",
-        height=220,
-        placeholder="Paste the news title and/or article text here...",
-        label_visibility="collapsed",
-    )
-    check = st.button("🔍 Analyze Article", use_container_width=False)
-    st.markdown('</div>', unsafe_allow_html=True)
+    card1 = st.container(border=True)
+    with card1:
+        news = st.text_area(
+            "News Article Text",
+            height=220,
+            placeholder="Paste the news title and/or article text here...",
+            label_visibility="collapsed",
+        )
+        check = st.button("🔍 Analyze Article", use_container_width=False)
 
 with col2:
-    st.markdown('<div class="card">', unsafe_allow_html=True)
-    st.markdown('<div class="metric-label">How it works</div>', unsafe_allow_html=True)
-    st.markdown(
-        """
-        1. Text is cleaned and normalized  
-        2. Converted into TF-IDF features  
-        3. Classified by a trained Logistic Regression model  
-        4. Confidence score is calculated
-        """
-    )
-    st.markdown('</div>', unsafe_allow_html=True)
+    card2 = st.container(border=True)
+    with card2:
+        st.markdown('<div class="metric-label">How it works</div>', unsafe_allow_html=True)
+        st.markdown(
+            """
+            1. Text is cleaned and normalized  
+            2. Converted into TF-IDF features  
+            3. Classified by a trained Logistic Regression model  
+            4. Confidence score is calculated
+            """
+        )
 
 # ---------------- Result Section ----------------
 if check:
