@@ -1,24 +1,102 @@
-"""
-Fake News Detection using NLP
-Project by: Tarun Chouhan
-Model: TF-IDF + Logistic Regression (Test Accuracy: 98.7%)
---------------------------------------------------------------
-Note: This is the same backend logic as the original app.
-Only the layout/design is simplified for a clean project-style UI.
-"""
-
 import re
 import pickle
 import streamlit as st
 
-# ----------------------------------------------------
-# Page config
-# ----------------------------------------------------
-st.set_page_config(page_title="Fake News Detection - NLP Project", page_icon="📰", layout="centered")
+# ---------------- Page Config ----------------
+st.set_page_config(
+    page_title="Fake News Detector | NLP",
+    page_icon="📰",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
 
-# ----------------------------------------------------
-# Load model + vectorizer (unchanged)
-# ----------------------------------------------------
+# ---------------- Custom CSS ----------------
+st.markdown("""
+    <style>
+        /* Overall page */
+        .main {
+            background-color: #f7f9fc;
+        }
+        /* Hide default Streamlit chrome for a cleaner look */
+        #MainMenu {visibility: hidden;}
+        footer {visibility: hidden;}
+
+        /* Header */
+        .app-title {
+            font-size: 2.3rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 0.2rem;
+        }
+        .app-subtitle {
+            font-size: 1.05rem;
+            color: #475569;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Card container */
+        .card {
+            background-color: #ffffff;
+            padding: 1.6rem 1.8rem;
+            border-radius: 14px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            border: 1px solid #e5e9f0;
+        }
+
+        /* Result banners */
+        .result-real {
+            background-color: #ecfdf3;
+            border: 1px solid #86efac;
+            color: #15803d;
+            padding: 1.2rem 1.5rem;
+            border-radius: 12px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            text-align: center;
+        }
+        .result-fake {
+            background-color: #fef2f2;
+            border: 1px solid #fca5a5;
+            color: #b91c1c;
+            padding: 1.2rem 1.5rem;
+            border-radius: 12px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        /* Metric labels */
+        .metric-label {
+            font-size: 0.85rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        /* Sidebar */
+        section[data-testid="stSidebar"] {
+            background-color: #0f172a;
+        }
+        section[data-testid="stSidebar"] * {
+            color: #e2e8f0 !important;
+        }
+
+        .stButton>button {
+            background-color: #1d4ed8;
+            color: white;
+            font-weight: 600;
+            border-radius: 10px;
+            padding: 0.6rem 1.5rem;
+            border: none;
+        }
+        .stButton>button:hover {
+            background-color: #1e40af;
+            color: white;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+# ---------------- Load Artifacts ----------------
 @st.cache_resource
 def load_artifacts():
     with open("logistic_regression_model.pkl", "rb") as f:
@@ -27,13 +105,9 @@ def load_artifacts():
         tfidf = pickle.load(f)
     return model, tfidf
 
-
 model, tfidf = load_artifacts()
 
-
-# ----------------------------------------------------
-# Same cleaning function used during training (unchanged)
-# ----------------------------------------------------
+# ---------------- Text Cleaning (same as training) ----------------
 def clean_text(text):
     text = str(text).lower()
     text = re.sub(r"<.*?>", " ", text)
@@ -41,105 +115,99 @@ def clean_text(text):
     text = re.sub(r"\s+", " ", text).strip()
     return text
 
-
 def predict_news(news_text):
     cleaned = clean_text(news_text)
     vectorized = tfidf.transform([cleaned])
     prob = model.predict_proba(vectorized)[0][1]
-    label = "True" if prob > 0.5 else "Fake"
+    label = "Real" if prob > 0.5 else "Fake"
     return label, float(prob)
 
+# ---------------- Sidebar ----------------
+with st.sidebar:
+    st.markdown("### 📰 About This Project")
+    st.write(
+        "An NLP-based system that classifies news articles as **Real** or **Fake** "
+        "using TF-IDF feature extraction and a Logistic Regression classifier."
+    )
+    st.markdown("---")
+    st.markdown("**Model:** TF-IDF + Logistic Regression")
+    st.markdown("**Test Accuracy:** 98.7%")
+    st.markdown("**Compared Against:** SimpleRNN, LSTM, GRU")
+    st.markdown("---")
+    st.markdown("**Built by:** Tarun Chouhan")
+    st.markdown(
+        """
+        <div style="display: flex; gap: 10px; margin-top: 8px;">
+            <a href="https://github.com/Tarunchouhan926/Fake-News-Detection-System-Using-Natural-Language-Processing-NLP-" target="_blank" style="text-decoration:none;">
+                <img src="https://img.shields.io/badge/GitHub-Repo-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub">
+            </a>
+            <a href="https://linkedin.com/in/tarun-chouhan" target="_blank" style="text-decoration:none;">
+                <img src="https://img.shields.io/badge/LinkedIn-Profile-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn">
+            </a>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
-# ----------------------------------------------------
-# Minimal styling (just to make it look neat, nothing flashy)
-# ----------------------------------------------------
+# ---------------- Header ----------------
+st.markdown('<div class="app-title">📰 Fake News Detection System</div>', unsafe_allow_html=True)
 st.markdown(
-    """
-    <style>
-    .block-container{ max-width:750px; padding-top:2rem; }
-    h1{ font-size:1.9rem !important; }
-    .project-info{
-        background:#f0f2f6; padding:0.8rem 1rem; border-radius:8px;
-        font-size:0.9rem; margin-bottom:1rem; border-left:4px solid #4C6EF5;
-    }
-    </style>
-    """,
+    '<div class="app-subtitle">Paste any news article below to check whether it\'s likely Real or Fake, '
+    'powered by NLP and Machine Learning.</div>',
     unsafe_allow_html=True,
 )
 
-# ----------------------------------------------------
-# Title + basic project info
-# ----------------------------------------------------
-st.title("📰 Fake News Detection System Using NLP")
-st.caption("A Machine Learning mini-project using TF-IDF and Logistic Regression")
+# ---------------- Main Input Card ----------------
+col1, col2 = st.columns([2, 1], gap="large")
 
-st.markdown(
-    """
-    <div class="project-info">
-    <b>Project by:</b> Tarun Chouhan<br>
-    <b>Model Used:</b> Logistic Regression &nbsp; | &nbsp; <b>Vectorizer:</b> TF-IDF<br>
-    <b>Test Accuracy:</b> 98.7%
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
-
-st.write("---")
-
-# ----------------------------------------------------
-# Input section
-# ----------------------------------------------------
-st.subheader("Enter a news article")
-news = st.text_area(
-    "Paste the news title and/or article text below:",
-    height=200,
-    placeholder="Paste the news title and/or article text here...",
-)
-
-col1, col2 = st.columns(2)
 with col1:
-    st.caption(f"Character count: {len(news)}")
+    card1 = st.container(border=True)
+    with card1:
+        news = st.text_area(
+            "News Article Text",
+            height=220,
+            placeholder="Paste the news title and/or article text here...",
+            label_visibility="collapsed",
+        )
+        check = st.button("🔍 Analyze Article", use_container_width=False)
+
 with col2:
-    st.caption(f"Word count: {len(news.split()) if news.strip() else 0}")
+    card2 = st.container(border=True)
+    with card2:
+        st.markdown('<div class="metric-label">How it works</div>', unsafe_allow_html=True)
+        st.markdown(
+            """
+            1. Text is cleaned and normalized  
+            2. Converted into TF-IDF features  
+            3. Classified by a trained Logistic Regression model  
+            4. Confidence score is calculated
+            """
+        )
 
-check = st.button("Check News", use_container_width=True)
-
-# ----------------------------------------------------
-# Prediction + result
-# ----------------------------------------------------
+# ---------------- Result Section ----------------
 if check:
     if news.strip() == "":
-        st.warning("Please enter some text first.")
+        st.warning("Please enter some article text first.")
     else:
-        with st.spinner("Analyzing the article..."):
-            label, prob = predict_news(news)
-        confidence = prob if label == "True" else 1 - prob
+        label, prob = predict_news(news)
+        confidence = prob if label == "Real" else 1 - prob
 
-        st.write("### Result")
-        if label == "True":
-            st.success(f"**Prediction: {label} News** (confidence: {confidence:.2%})")
-        else:
-            st.error(f"**Prediction: {label} News** (confidence: {confidence:.2%})")
+        st.markdown("### Result")
 
-        st.progress(float(confidence))
-        st.caption(f"Raw model output (probability of true): {prob:.4f}")
+        result_col, gauge_col = st.columns([1, 2], gap="large")
 
-        with st.expander("How this works"):
-            st.write(
-                """
-                1. The input text is cleaned (lowercased, HTML tags and special characters removed).
-                2. The cleaned text is converted into numerical features using **TF-IDF**.
-                3. A trained **Logistic Regression** model predicts the probability that the
-                   article is *True*.
-                4. If the probability is greater than 0.5, the article is classified as **True**,
-                   otherwise it is classified as **Fake**.
-                """
+        with result_col:
+            css_class = "result-real" if label == "Real" else "result-fake"
+            icon = "✅" if label == "Real" else "🚫"
+            st.markdown(
+                f'<div class="{css_class}">{icon} {label} News<br>'
+                f'<span style="font-size:0.95rem; font-weight:500;">Confidence: {confidence:.1%}</span></div>',
+                unsafe_allow_html=True,
             )
 
-st.write("---")
-
-# ----------------------------------------------------
-# Footer
-# ----------------------------------------------------
-st.caption("Made by Tarun Chouhan | NLP • Machine Learning • Streamlit")
-st.caption("GitHub: github.com/Tarunchouhan926  |  LinkedIn: linkedin.com/in/tarun-chouhan")
+        with gauge_col:
+            st.markdown('<div class="metric-label">Confidence Level</div>', unsafe_allow_html=True)
+            st.progress(confidence)
+            m1, m2 = st.columns(2)
+            m1.metric("Predicted Class", label)
+            m2.metric("Confidence Score", f"{confidence:.2%}")
